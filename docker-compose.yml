@@ -1,0 +1,87 @@
+services:
+  prestashop:
+    image: prestashop/prestashop:${DOCKER_PRESTASHOP_VERSION:-8.0.0-apache}
+    env_file:
+      - ./prestashop/prestashop.env
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:80 || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 1m
+    volumes:
+      - ./prestashop/ps_scripts:/ps_scripts:ro
+      - ./ps-modules:/ps-modules:rw
+    command: /ps_scripts/docker_startup.sh
+    depends_on:
+      - prestashop-mysql
+      - prestashop-ngrok
+    networks:
+      prestashop:
+    ports:
+      - ${EXT_PORT_PRESTASHOP:-8000}:80
+
+  prestashop-ngrok:
+    image: ngrok/ngrok:${DOCKER_NGROK_VERSION:-alpine}
+    environment:
+      - NGROK_CONFIG=/etc/ngrok.yml
+      - NGROK_TOKEN=$NGROK_TOKEN
+    volumes:
+      - ./ngrok/ngrok.yml:/etc/ngrok.yml:ro
+    entrypoint:
+      [
+        "/bin/sh",
+        "-c",
+        "ngrok start --authtoken $NGROK_TOKEN --config /etc/ngrok.yml --all",
+      ]
+    networks:
+      prestashop:
+        aliases:
+          - ngrok
+    ports:
+      - 4040:4040
+
+  prestashop-mysql:
+    image: mariadb:${DOCKER_MARIADB_VERSION:-10.8}
+    env_file:
+      - ./mysql/mysql.env
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "mysqladmin",
+          "ping",
+          "--host=localhost",
+          "--user=root",
+          "--password=${MARIADB_ROOT_PASSWORD:-prestashop}",
+        ]
+      interval: 5s
+      timeout: 10s
+      retries: 5
+      start_period: 5s
+    networks:
+      prestashop:
+        aliases:
+          - mysql
+    expose:
+      - 3306
+
+  prestashop-phpmyadmin:
+    image: phpmyadmin:latest
+    env_file:
+      - ./phpmyadmin/phpmyadmin.env
+    depends_on:
+      - prestashop-mysql
+    networks:
+      prestashop:
+        aliases:
+          - phpmyadmin
+    ports:
+      - ${EXT_PORT_PHPMYADMIN:-8888}:80
+
+networks:
+  prestashop:
+
+volumes:
+  ps-modules:
+    driver: local
