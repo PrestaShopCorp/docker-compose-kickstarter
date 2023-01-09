@@ -22,7 +22,9 @@ edit .env
 Start the services:
 
 ```sh
-docker compose up
+docker compose
+// or to daemonize the services:
+docker compose up -d
 ```
 
 Browse the shop:
