@@ -1,7 +1,6 @@
 # Docker Compose Kickstarter
 
-A docker-compose kickstarter for PrestaShop.
-This project relies on [ngrok](https://ngrok.com) to open a network edge endpoint,
+This is docker-compose kickstarter for PrestaShop. This project relies on [ngrok](https://ngrok.com) to open a network edge endpoint,
 but [localtunnel](https://github.com/localtunnel/localtunnel) could be used as well.
 
 Requirements:
@@ -12,20 +11,24 @@ Requirements:
 
 ## Configure
 
+After cloning the sources, configure the environment variables on your host:
+
 ```sh
 cp .env.dist .env
 edit .env
 ```
 
-## Use
+## Start
 
-Start the services:
+You can now start the services:
 
 ```sh
-docker compose
-// or to daemonize the services:
 docker compose up -d
 ```
+
+> Note: `-d` stands for daemonize mode, so your prompt will be freed. Feel free to diagnose any issues with `docker ps -a` or directly docker logs (`docker compose logs prestashop`).
+
+## Use
 
 Browse the shop:
 
