@@ -13,7 +13,7 @@ Requirements:
 ## Configure
 
 ```sh
-cp .env.dist
+cp .env.dist .env
 edit .env
 ```
 
