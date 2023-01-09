@@ -6,8 +6,8 @@ but [localtunnel](https://github.com/localtunnel/localtunnel) could be used as w
 
 Requirements:
 
-- [docker](https://www.docker.com) recommended version >= 20
-- [docker compose](https://docs.docker.com/compose/) version: >= 1.29
+- [docker](https://www.docker.com) recommended version >= 20 (`docker --version`)
+- [docker compose](https://docs.docker.com/compose/) version: >= 1.29 (`docker compose version`)
 - An Ngrok free account and a token: https://dashboard.ngrok.com/get-started/setup
 
 ## Configure
