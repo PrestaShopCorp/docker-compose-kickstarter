@@ -10,9 +10,11 @@ services:
       retries: 3
       start_period: 1m
     volumes:
-      - ./prestashop/ps_scripts:/ps_scripts:ro
-      - ./ps-modules:/ps-modules:rw
-    command: /ps_scripts/docker_startup.sh
+      - C:/Users/aubin/Documents/Code/docker-compose-kickstarter/prestashop/ps_scripts/docker_startup.sh:/ps_scripts/docker_startup.sh:ro
+      - C:/Users/aubin/Documents/Code/docker-compose-kickstarter/prestashop/ps_scripts/install_modules.sh:/ps_scripts/install_modules.sh:ro
+      - C:/Users/aubin/Documents/Code/docker-compose-kickstarter/prestashop/ps_scripts/configure_ngrok.sh:/ps_scripts/configure_ngrok.sh:ro
+      - C:/Users/aubin/Documents/Code/docker-compose-kickstarter/ps-modules:/ps-modules:rw
+    command: bash /ps_scripts/docker_startup.sh
     depends_on:
       - prestashop-mysql
       - prestashop-ngrok
