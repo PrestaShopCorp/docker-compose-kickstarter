@@ -1,6 +1,6 @@
 services:
   prestashop:
-    image: prestashop/prestashop:${DOCKER_PRESTASHOP_VERSION:-8.0.0-apache}
+    image: prestashop/prestashop:${DOCKER_PRESTASHOP_VERSION:-8.0.1-apache}
     env_file:
       - ./prestashop/prestashop.env
     healthcheck:
@@ -10,8 +10,9 @@ services:
       retries: 3
       start_period: 1m
     volumes:
-      - ./prestashop/ps_scripts:/ps_scripts:ro
-      - ./ps-modules:/ps-modules:rw
+      - ./prestashop/ps_scripts/docker_startup.sh:/ps_scripts/docker_startup.sh:ro
+      - ./prestashop/ps_scripts/configure_ngrok.sh:/ps_scripts/configure_ngrok.sh:ro
+      - ./prestashop/ps_scripts/install_modules.sh:/ps_scripts/install_modules.sh:ro
     command: /ps_scripts/docker_startup.sh
     depends_on:
       - prestashop-mysql
@@ -81,7 +82,3 @@ services:
 
 networks:
   prestashop:
-
-volumes:
-  ps-modules:
-    driver: local
