@@ -6,7 +6,7 @@ export PS_DIR="${PS_DIR:-/var/www/html}"
 export MODULE_DIR="${MODULE_DIR:-/var/www/html/modules}"
 
 # PRE-INSTALL scripts
-./configure_ngrok.sh
+bash ./configure_ngrok.sh
 
 # POST-INSTALL scripts
 mkdir -p /tmp/init-scripts/
