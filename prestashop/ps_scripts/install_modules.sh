@@ -6,7 +6,7 @@ set -e
 INSTALL_COMMAND="${PS_DIR}/bin/console prestashop:module --no-interaction install"
 MODULES_TO_INSTALL=/ps-modules
 
-for file in $(ls "${MODULES_TO_INSTALL}/*.zip"); do
+for file in $(ls "${MODULES_TO_INSTALL}"/*.zip); do
   module=$(basename ${file} | tr "-" "\n" | head -n 1);
   echo "--> installing ${module} from ${file}...";
   rm -rf "${MODULE_DIR}/${module:-something-at-least}"
